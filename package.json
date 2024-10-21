@@ -1,0 +1,29 @@
+{
+  "name": "laravel-mix-sitemap",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "test-example": "cd example && npx mix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sitemap",
+    "laravel-mix",
+    "webpack",
+    "generator"
+  ],
+  "author": "blanket11 <bkweb11k@gmail.com> (https://push.tokyo/)",
+  "license": "MIT",
+  "description": "",
+  "bugs": {
+    "url": "https://github.com/blanket11/laravel-mix-sitemap/issues"
+  },
+  "homepage": "https://github.com/blanket11/laravel-mix-sitemap#readme",
+  "devDependencies": {
+    "eslint": "^9.13.0",
+    "laravel-mix": "^6.0.49",
+    "prettier": "^3.3.3"
+  }
+}
