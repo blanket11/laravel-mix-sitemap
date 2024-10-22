@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+let mix = require('laravel-mix');
 
 /**
  * SitemapGenerator - サイトマップを生成するクラス
@@ -10,7 +11,6 @@ class SitemapGenerator {
    * @param {Object} options - サイトマップ生成に必要なオプション
    */
   register(options = {}) {
-    console.log('init ------------');
     this.baseUrl = options.baseUrl || 'https://example.com'; // ベースURL
     this.distDir = path.resolve(process.cwd(), options.distDir || 'dist'); // 出力フォルダのパス
     this.defaultChangefreq = options.defaultChangefreq || 'weekly'; // 更新頻度の初期値
@@ -21,20 +21,21 @@ class SitemapGenerator {
    * サイトマップの生成を開始
    * - ディレクトリが存在するか確認し、存在すればサイトマップを生成
    */
-  webpackDone() {
-    console.log('Generating sitemap...');
-
+  generate() {
+    // 出力ディレクトリが存在しない場合はエラーメッセージを表示して終了
     if (!fs.existsSync(this.distDir)) {
       console.error(`Error: Directory ${this.distDir} does not exist.`);
-      return; // 出力ディレクトリが存在しない場合は処理を中断
+      return;
     }
 
-    const urls = this.getUrls(this.distDir); // URL一覧の取得
-    const sitemap = this.buildSitemap(urls); // サイトマップXMLの生成
+    // サイトマップ用のURLリストを取得
+    const urls = this.getUrls(this.distDir);
 
-    // sitemap.xmlを書き込み
+    // URLリストからサイトマップを生成
+    const sitemap = this.buildSitemap(urls);
+
+    // sitemap.xml ファイルを書き込み
     fs.writeFileSync(path.join(this.distDir, 'sitemap.xml'), sitemap);
-    console.log('Sitemap generated successfully.');
   }
 
   /**
@@ -88,4 +89,20 @@ ${urls.join('\n')}
   }
 }
 
-module.exports = SitemapGenerator;
+// Laravel Mix用の拡張機能を作成
+mix.extend('sitemap', new (class {
+  /**
+   * Laravel Mixの拡張機能としての初期設定
+   * @param {Object} options - サイトマップ生成に必要なオプション
+   */
+  register(options) {
+    this.options = options; // オプションを保持
+
+    // Laravel Mixのビルド完了後に実行される処理を登録
+    mix.after(() => {
+      const generator = new SitemapGenerator();
+      generator.register(this.options); // オプションを登録
+      generator.generate(); // サイトマップを生成
+    });
+  }
+})());
