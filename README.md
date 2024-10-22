@@ -15,35 +15,20 @@ webpack.mix.js に以下の設定を追加して、サイトマップを生成�
 
 ```javascript
 let mix = require('laravel-mix');
-const SitemapGenerator = require('laravel-mix-sitemap'); // パッケージをインポート
+require('./modules/index'); // 拡張機能を読み込む
 
 const BASE_URL = 'https://example.com'; // あなたのベースURLを設定
+const distPath = 'dist'; // サイトマップの出力先ディレクトリ
 
-mix.after(async () => {
-  const generator = new SitemapGenerator();
-  generator.register({
-    baseUrl: BASE_URL,
-    distDir: 'dist', // サイトマップを生成するディレクトリを指定
-    defaultChangefreq: 'daily', // 更新頻度
-    defaultPriority: 0.5, // 優先度
-  });
-  generator.webpackDone();
+mix.sitemap({
+  baseUrl: BASE_URL, // サイトのベースURL
+  distDir: distPath, // サイトマップを生成するディレクトリ
+  defaultChangefreq: 'daily', // 各ページの更新頻度
+  defaultPriority: 0.5, // 各ページの優先度
 });
 ```
 
-これにより、ビルド後に指定したディレクトリ（dist）に sitemap.xml が生成されます。
-
-### 例
-サンプルプロジェクトとして example フォルダを用意しています。example ディレクトリ内で以下のコマンドを実行することで、簡単に動作確認が可能です。
-
-#### 1. 例の実行
-
-```bash
-npm run test-example
-```
-
-
-このコマンドを実行すると、example/dist/sitemap.xml にサイトマップが生成されます。
+これにより、ビルド後に指定したディレクトリ（例：dist）に sitemap.xml が生成されます。
 
 ## オプション
 register() メソッドに渡すオプションは以下の通りです。
