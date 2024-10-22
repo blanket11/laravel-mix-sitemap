@@ -1,5 +1,6 @@
 # Node modules
 node_modules/
+mix-manifest.json
 
 # Logs
 logs/
@@ -15,9 +16,6 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
-
-# Build directory
-dist/
 
 # IDE/editor specific
 .vscode/
