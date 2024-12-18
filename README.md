@@ -15,7 +15,7 @@ webpack.mix.js に以下の設定を追加して、サイトマップを生成�
 
 ```javascript
 let mix = require('laravel-mix');
-require('./modules/index'); // 拡張機能を読み込む
+require('laravel-mix-sitemap'); // 拡張機能を読み込む
 
 const BASE_URL = 'https://example.com'; // あなたのベースURLを設定
 const distPath = 'dist'; // サイトマップの出力先ディレクトリ
